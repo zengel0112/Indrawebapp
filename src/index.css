@@ -182,3 +182,36 @@ datalist option::before {
 .datalist-thumb {
     @apply absolute -top-0.5 z-30 flex h-7 w-7 -translate-x-2 items-center justify-center rounded-full text-xs;
 }
+.progress-glow {
+  animation: shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: shine 2s infinite linear;
+}

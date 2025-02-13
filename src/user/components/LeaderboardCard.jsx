@@ -1,21 +1,7 @@
-import { TrendingUp, TrendingDown, Minus, Medal, Flame } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Flame } from 'lucide-react';
 import PropTypes from 'prop-types';
 
-const LeaderboardCard = ({ rank, name, score, avatar, trend, isGold, isSilver, isBronze, streak = 0 }) => {
-    const getBgColor = () => {
-        if (isGold) return 'bg-gradient-to-r from-yellow-500/10 to-yellow-500/5 dark:from-yellow-500/20 dark:to-yellow-500/10';
-        if (isSilver) return 'bg-gradient-to-r from-gray-300/10 to-gray-300/5 dark:from-gray-300/20 dark:to-gray-300/10';
-        if (isBronze) return 'bg-gradient-to-r from-orange-500/10 to-orange-500/5 dark:from-orange-500/20 dark:to-orange-500/10';
-        return 'bg-white dark:bg-gray-800/50';
-    };
-
-    const getMedalColor = () => {
-        if (isGold) return 'text-yellow-500';
-        if (isSilver) return 'text-gray-400';
-        if (isBronze) return 'text-orange-500';
-        return 'text-gray-400';
-    };
-
+const LeaderboardCard = ({ rank, name, score, avatar, trend, streak = 0 }) => {
     const getStageInfo = (score) => {
         const stages = [
             { max: 20, color: '#AAAAAA', startColor: '#3D3D3D', stage: 1 },
@@ -42,34 +28,38 @@ const LeaderboardCard = ({ rank, name, score, avatar, trend, isGold, isSilver, i
     const stageInfo = getStageInfo(score);
 
     return (
-        <div className={`${getBgColor()} rounded-xl p-4 shadow-sm 
-                        border border-gray-100 dark:border-gray-700
-                        hover:shadow-md transition-all duration-200`}>
+        <div className="bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-700/50 
+                        rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700
+                        transition-all duration-200 hover:shadow-md">
             <div className="flex items-center gap-4">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full 
-                              bg-gray-100 dark:bg-gray-700">
-                    {avatar ? (
-                        <img src={avatar} alt={name} className="w-10 h-10 rounded-full" />
-                    ) : (
-                        <span className="text-xl font-bold text-gray-500 dark:text-gray-400">
-                            {rank}
-                        </span>
-                    )}
+                {/* Avatar circle and rank container */}
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full 
+                                  bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        {avatar ? (
+                            <img src={avatar} alt={name} className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-xl font-bold text-gray-400 dark:text-gray-300">
+                                {name[0]}
+                            </span>
+                        )}
+                    </div>
+                    <span className="text-2xl font-bold text-gray-400 dark:text-gray-500">
+                        {rank}
+                    </span>
                 </div>
 
+                {/* Rest of the content */}
                 <div className="flex-1 flex items-center gap-4">
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-semibold text-gray-900 dark:text-white">
                                 {name}
                             </h3>
-                            {(isGold || isSilver || isBronze) && (
-                                <Medal className={`w-5 h-5 ${getMedalColor()}`} />
-                            )}
                             {streak > 0 && (
-                                <div className="flex items-center gap-1 bg-orange-100 px-2 py-0.5 rounded-full">
+                                <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
                                     <Flame className="w-4 h-4 text-orange-500" />
-                                    <span className="text-sm font-medium text-orange-600">{streak}</span>
+                                    <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{streak}</span>
                                 </div>
                             )}
                         </div>
@@ -108,9 +98,6 @@ LeaderboardCard.propTypes = {
     score: PropTypes.number.isRequired,
     avatar: PropTypes.string,
     trend: PropTypes.oneOf(['up', 'down', 'same']),
-    isGold: PropTypes.bool,
-    isSilver: PropTypes.bool,
-    isBronze: PropTypes.bool,
     streak: PropTypes.number
 };
 
