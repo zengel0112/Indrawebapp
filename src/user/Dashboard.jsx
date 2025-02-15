@@ -80,56 +80,57 @@ const Dashboard = () => {
     `;
 
     const gradientStyles = `
-      @keyframes gradient {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
+  @keyframes gradient {
+    0% { --gradient-angle: 0deg; }
+    100% { --gradient-angle: 360deg; }
+  }
 
-      .gradient-border-gold {
-        position: relative;
-        background: linear-gradient(var(--gradient-angle, 0deg), #FFD700, #FFA500, #FF8C00);
-        background-size: 200% 200%;
-        animation: gradient 3s ease infinite;
-      }
+  @property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
 
-      .gradient-border-silver {
-        position: relative;
-        background: linear-gradient(var(--gradient-angle, 0deg), #C0C0C0, #808080, #A9A9A9);
-        background-size: 200% 200%;
-        animation: gradient 3s ease infinite;
-      }
+  .gradient-container {
+    position: relative;
+    border-radius: 1rem;
+    padding: 3px;
+    background-clip: content-box, border-box;
+    background-origin: border-box;
+    transition: all 0.3s ease;
+  }
 
-      .gradient-border-bronze {
-        position: relative;
-        background: linear-gradient(var(--gradient-angle, 0deg), #CD7F32, #B8860B, #DAA520);
-        background-size: 200% 200%;
-        animation: gradient 3s ease infinite;
-      }
+  .gradient-border-gold {
+    background: 
+      var(--bg-color),
+      linear-gradient(var(--gradient-angle), #FFD700, #FFA500, #FF8C00, #FFD700);
+    animation: gradient 3s linear infinite;
+  }
 
-      .gradient-container {
-        position: relative;
-        padding: 3px;
-        border-radius: 1rem;
-        transition: all 0.3s ease;
-      }
+  .gradient-border-silver {
+    background: 
+      var(--bg-color),
+      linear-gradient(var(--gradient-angle), #C0C0C0, #808080, #A9A9A9, #C0C0C0);
+    animation: gradient 3s linear infinite;
+  }
 
-      .gradient-container:hover {
-        transform: translateY(-2px);
-      }
+  .gradient-border-bronze {
+    background: 
+      var(--bg-color),
+      linear-gradient(var(--gradient-angle), #CD7F32, #B8860B, #DAA520, #CD7F32);
+    animation: gradient 3s linear infinite;
+  }
 
-      .gradient-content {
-        background: var(--bg-color);
-        border-radius: 0.75rem;
-        height: 100%;
-      }
-    `;
+  .gradient-container:hover {
+    transform: translateY(-2px);
+  }
+
+  .gradient-content {
+    background: var(--bg-color);
+    border-radius: 0.75rem;
+    height: 100%;
+  }
+`;
 
     return (
         <section className="py-8 px-20 max-sm:px-6 max-sm:py-4 min-h-screen">

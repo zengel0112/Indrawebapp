@@ -2,52 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Edit2, Camera, Save, X, Sun, Moon, Trophy, TrendingUp, CheckCircle, Flame, Mail, Phone, MapPin, Globe, Briefcase, User, Calendar, FileText } from 'lucide-react';  //npm install lucide-react
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import FireAnimation from '../components/FireAnimation';
 
-// Add this style at the top of your component after imports
-const flameStyles = `
-  @keyframes flameAnimation {
-    0% { 
-      transform: scale(1) rotate(-2deg);
-      filter: brightness(1);
-    }
-    25% {
-      transform: scale(1.1) rotate(2deg);
-      filter: brightness(1.2);
-    }
-    50% { 
-      transform: scale(1.15) rotate(-1deg);
-      filter: brightness(1.3);
-    }
-    75% {
-      transform: scale(1.1) rotate(1deg);
-      filter: brightness(1.2);
-    }
-    100% { 
-      transform: scale(1) rotate(-2deg);
-      filter: brightness(1);
-    }
-  }
 
-  .flame-animate {
-    animation: flameAnimation 2s ease-in-out infinite;
-    transform-origin: center bottom;
-  }
-
-  .flame-low {
-    animation-duration: 2.5s;
-    filter: brightness(0.9) saturate(0.8);
-  }
-
-  .flame-medium {
-    animation-duration: 2s;
-    filter: brightness(1.1) saturate(1.2);
-  }
-
-  .flame-high {
-    animation-duration: 1.5s;
-    filter: brightness(1.3) saturate(1.4);
-  }
-`;
 
 // Helper function for random color
 const getRandomColor = () => {
@@ -126,7 +83,7 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
   const [stats, setStats] = useState({
     tasksCompleted: 3,
     totalTasks: 4,
-    currentStreak: 3,
+    currentStreak: 8,
     rank: 4,
     score: 96
   });
@@ -528,32 +485,19 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
               <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg group">
-                <style>{flameStyles}</style>
-                <div className="flex items-center gap-3 mb-2">
-                    <Flame className="w-5 h-5 text-orange-400 dark:text-orange-500" />
-                    <span className="text-sm text-gray-500 dark:text-gray-400">Week streaks</span>
-                </div>
-                <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{stats.currentStreak}</span>
-                    <div className="relative">
-                        <Flame 
-                            className={`w-6 h-6 text-orange-500 flame-animate
-                          ${stats.currentStreak < 3 ? 'flame-low' : 
-                            stats.currentStreak < 7 ? 'flame-medium' : 'flame-high'}`}
-                            fill="currentColor"
-                            strokeWidth={1.5}
-                        />
-                        {stats.currentStreak >= 7 && (
-                            <Flame 
-                                className="w-6 h-6 absolute inset-0 text-yellow-400 opacity-50 flame-animate"
-                                style={{ animationDelay: '-0.5s' }}
-                                fill="currentColor"
-                                strokeWidth={1}
-                            />
-                        )}
-                    </div>
-                </div>
-              </div>
+    <div className="flex items-center gap-3 mb-2">
+        <Flame className="w-5 h-5 text-orange-400 dark:text-orange-500" />
+        <span className="text-sm text-gray-500 dark:text-gray-400">Week streaks</span>
+    </div>
+    <div className="relative flex items-center">
+        <div className="absolute -left-2 -top-3">
+            <FireAnimation size={64} />
+        </div>
+        <span className="text-2xl font-bold text-gray-900 dark:text-white relative z-10 mt-9 ml-3">
+    {stats.currentStreak}
+</span>
+    </div>
+</div>
             </div>
 
             {/* Charts Section - Right Side */}
