@@ -151,133 +151,213 @@ const Dashboard = () => {
                 {/* Second Place */}
                 <div className="order-1 mt-8">
                     {topSellers[1] && (
-                        <div className="p-6 bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800/80 
-                                      rounded-xl text-center transition-all duration-200 hover:shadow-lg relative group">
-                            <div className="absolute -left-3 top-4 w-10 h-10 bg-gray-200 dark:bg-gray-700/80 
-                                          flex items-center justify-center rounded-lg shadow-md">
-                                <span className="text-2xl font-bold text-gray-500 dark:text-gray-400">2</span>
-                            </div>
-                            <div className="flex justify-center mb-4">
-                                <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-                                    {topSellers[1].avatar ? (
-                                        <img src={topSellers[1].avatar} alt={topSellers[1].name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <span className="text-2xl font-bold text-gray-400 dark:text-gray-300">{topSellers[1].name[0]}</span>
+                        <>
+                            <style>
+                                {`
+                                    @keyframes silver-border {
+                                        0% { border-color: #C0C0C0; }
+                                        33% { border-color: #00ffff; }
+                                        66% { border-color: #000fff; }
+                                        100% { border-color: #A9A9A9; }
+                                    }
+                                    .silver-border {
+                                        animation: silver-border 4s linear infinite;
+                                    }
+                                `}
+                            </style>
+                            <style>
+                                {`
+                                    @keyframes silver-border {
+                                        0% { border-color: #C0C0C0; }
+                                        33% { border-color: #00ffff; }
+                                        66% { border-color: #000fff; }
+                                        100% { border-color: #A9A9A9; }
+                                    }
+                                    .silver-border {
+                                        animation: silver-border 6s ease-in-out infinite;
+                                        border-width: 3px;
+                                    }
+                                `}
+                            </style>
+                            <div className="p-6 bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800/80 
+                                          rounded-xl text-center border-2 silver-border
+                                          transition-all duration-200 hover:shadow-lg relative group">
+                                <div className="absolute -left-3 top-4 w-10 h-10 bg-gray-200 dark:bg-gray-700/80 
+                                              flex items-center justify-center rounded-lg shadow-md">
+                                    <span className="text-2xl font-bold text-gray-500 dark:text-gray-400">2</span>
+                                </div>
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        {topSellers[1].avatar ? (
+                                            <img src={topSellers[1].avatar} alt={topSellers[1].name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-2xl font-bold text-gray-400 dark:text-gray-300">{topSellers[1].name[0]}</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <h3 className="font-bold text-lg text-gray-900 dark:text-white">{topSellers[1].name}</h3>
+                                <p className="text-gray-600 dark:text-gray-400 mb-3">Score: {topSellers[1].score}</p>
+                                <div className="flex items-center justify-center gap-2 mb-3">
+                                    {topSellers[1].streak > 0 && (
+                                        <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
+                                            <Flame className="w-4 h-4 text-orange-500" />
+                                            <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[1].streak}</span>
+                                        </div>
                                     )}
                                 </div>
+                                <div className="flex gap-0.5 h-2.5 mb-1">
+                                    {[...Array(20)].map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex-1 rounded-sm transition-all duration-300 
+                                                      ${index < topSellers[1].stageScore
+                                                        ? getStageColor(topSellers[1].stage).bgLight + ' ' + getStageColor(topSellers[1].stage).bgDark
+                                                        : getStageColor(topSellers[1].stage).emptyLight + ' ' + getStageColor(topSellers[1].stage).emptyDark}`}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-sm text-gray-500 dark:text-gray-400">Stage {topSellers[1].stage}</span>
                             </div>
-                            <h3 className="font-bold text-lg text-gray-900 dark:text-white">{topSellers[1].name}</h3>
-                            <p className="text-gray-600 dark:text-gray-400 mb-3">Score: {topSellers[1].score}</p>
-                            <div className="flex items-center justify-center gap-2 mb-3">
-                                {topSellers[1].streak > 0 && (
-                                    <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
-                                        <Flame className="w-4 h-4 text-orange-500" />
-                                        <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[1].streak}</span>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="flex gap-0.5 h-2.5 mb-1">
-                                {[...Array(20)].map((_, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex-1 rounded-sm transition-all duration-300 
-                                                  ${index < topSellers[1].stageScore
-                                                    ? getStageColor(topSellers[1].stage).bgLight + ' ' + getStageColor(topSellers[1].stage).bgDark
-                                                    : getStageColor(topSellers[1].stage).emptyLight + ' ' + getStageColor(topSellers[1].stage).emptyDark}`}
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">Stage {topSellers[1].stage}</span>
-                        </div>
+                        </>
                     )}
                 </div>
 
                 {/* First Place */}
                 <div className="order-2">
                     {topSellers[0] && (
-                        <div className="p-6 bg-yellow-50 dark:bg-yellow-900/20 hover:bg-yellow-100/50 dark:hover:bg-yellow-900/30 
-                                      rounded-xl text-center border-2 border-yellow-200 dark:border-yellow-500/30 
-                                      transition-all duration-200 hover:shadow-xl relative group">
-                            <div className="absolute -left-3 top-4 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/80 
-                                          flex items-center justify-center rounded-lg shadow-md">
-                                <span className="text-3xl font-bold text-yellow-500 dark:text-yellow-400">1</span>
-                            </div>
-                            <div className="flex justify-center mb-4">
-                                <div className="w-24 h-24 rounded-full bg-yellow-100 flex items-center justify-center overflow-hidden">
-                                    {topSellers[0].avatar ? (
-                                        <img src={topSellers[0].avatar} alt={topSellers[0].name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <span className="text-3xl font-bold text-yellow-500">{topSellers[0].name[0]}</span>
+                        <>
+                            <style>
+                                {`
+                                    @keyframes rainbow-border {
+                                        0% { border-color: #ff0000; }
+                                        14% { border-color: #ff8800; }
+                                        28% { border-color: #ffff00; }
+                                        42% { border-color: #00ff00; }
+                                        56% { border-color: #00ffff; }
+                                        70% { border-color: #0088ff; }
+                                        84% { border-color: #8800ff; }
+                                        100% { border-color: #ff0000; }
+                                    }
+                                    .rainbow-border {
+                                        animation: rainbow-border 8s ease-in-out infinite;
+                                        border-width: 4px;
+                                    }
+                                `}
+                            </style>
+                            <div className="p-6 bg-yellow-50 dark:bg-yellow-900/20 hover:bg-yellow-100/50 dark:hover:bg-yellow-900/30 
+                                          rounded-xl text-center border-2 rainbow-border
+                                          transition-all duration-200 hover:shadow-xl relative group">
+                                <div className="absolute -left-3 top-4 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/80 
+                                              flex items-center justify-center rounded-lg shadow-md">
+                                    <span className="text-3xl font-bold text-yellow-500 dark:text-yellow-400">1</span>
+                                </div>
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-24 h-24 rounded-full bg-yellow-100 flex items-center justify-center overflow-hidden">
+                                        {topSellers[0].avatar ? (
+                                            <img src={topSellers[0].avatar} alt={topSellers[0].name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-3xl font-bold text-yellow-500">{topSellers[0].name[0]}</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <h3 className="font-bold text-xl">{topSellers[0].name}</h3>
+                                <p className="text-gray-600 mb-3">Score: {topSellers[0].score}</p>
+                                <div className="flex items-center justify-center gap-2 mb-3">
+                                    {topSellers[0].streak > 0 && (
+                                        <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
+                                            <Flame className="w-4 h-4 text-orange-500" />
+                                            <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[0].streak}</span>
+                                        </div>
                                     )}
                                 </div>
+                                <div className="flex gap-0.5 h-2.5 mb-1">
+                                    {[...Array(20)].map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex-1 rounded-sm transition-all duration-300 
+                                                      ${index < topSellers[0].stageScore
+                                                        ? getStageColor(topSellers[0].stage).bgLight + ' ' + getStageColor(topSellers[0].stage).bgDark
+                                                        : getStageColor(topSellers[0].stage).emptyLight + ' ' + getStageColor(topSellers[0].stage).emptyDark}`}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-sm text-yellow-600">Stage {topSellers[0].stage}</span>
                             </div>
-                            <h3 className="font-bold text-xl">{topSellers[0].name}</h3>
-                            <p className="text-gray-600 mb-3">Score: {topSellers[0].score}</p>
-                            <div className="flex items-center justify-center gap-2 mb-3">
-                                {topSellers[0].streak > 0 && (
-                                    <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
-                                        <Flame className="w-4 h-4 text-orange-500" />
-                                        <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[0].streak}</span>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="flex gap-0.5 h-2.5 mb-1">
-                                {[...Array(20)].map((_, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex-1 rounded-sm transition-all duration-300 
-                                                  ${index < topSellers[0].stageScore
-                                                    ? getStageColor(topSellers[0].stage).bgLight + ' ' + getStageColor(topSellers[0].stage).bgDark
-                                                    : getStageColor(topSellers[0].stage).emptyLight + ' ' + getStageColor(topSellers[0].stage).emptyDark}`}
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-sm text-yellow-600">Stage {topSellers[0].stage}</span>
-                        </div>
+                        </>
                     )}
                 </div>
 
                 {/* Third Place */}
                 <div className="order-3 mt-8">
                     {topSellers[2] && (
-                        <div className="p-6 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100/50 dark:hover:bg-orange-900/30 
-                                      rounded-xl text-center transition-all duration-200 hover:shadow-lg relative group">
-                            <div className="absolute -left-3 top-4 w-10 h-10 bg-orange-100 dark:bg-orange-900/80 
-                                          flex items-center justify-center rounded-lg shadow-md">
-                                <span className="text-2xl font-bold text-orange-500 dark:text-orange-400">3</span>
-                            </div>
-                            <div className="flex justify-center mb-4">
-                                <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden">
-                                    {topSellers[2].avatar ? (
-                                        <img src={topSellers[2].avatar} alt={topSellers[2].name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <span className="text-2xl font-bold text-orange-500">{topSellers[2].name[0]}</span>
+                        <>
+                            <style>
+                                {`
+                                    @keyframes bronze-border {
+                                        0% { border-color: #CD7F32; }
+                                        33% { border-color: #fff000; }
+                                        66% { border-color: #ff0000; }
+                                        100% { border-color: #CD7F32; }
+                                    }
+                                    .bronze-border {
+                                        animation: bronze-border 4s linear infinite;
+                                    }
+                                `}
+                            </style>
+                            <style>
+                                {`
+                                    @keyframes bronze-border {
+                                        0% { border-color: #CD7F32; }
+                                        33% { border-color: #fff000; }
+                                        66% { border-color: #ff0000; }
+                                        100% { border-color: #CD7F32; }
+                                    }
+                                    .bronze-border {
+                                        animation: bronze-border 6s ease-in-out infinite;
+                                        border-width: 3px;
+                                    }
+                                `}
+                            </style>
+                            <div className="p-6 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100/50 dark:hover:bg-orange-900/30 
+                                          rounded-xl text-center border-2 bronze-border
+                                          transition-all duration-200 hover:shadow-lg relative group">
+                                <div className="absolute -left-3 top-4 w-10 h-10 bg-orange-100 dark:bg-orange-900/80 
+                                              flex items-center justify-center rounded-lg shadow-md">
+                                    <span className="text-2xl font-bold text-orange-500 dark:text-orange-400">3</span>
+                                </div>
+                                <div className="flex justify-center mb-4">
+                                    <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden">
+                                        {topSellers[2].avatar ? (
+                                            <img src={topSellers[2].avatar} alt={topSellers[2].name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-2xl font-bold text-orange-500">{topSellers[2].name[0]}</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <h3 className="font-bold text-lg">{topSellers[2].name}</h3>
+                                <p className="text-gray-600 mb-3">Score: {topSellers[2].score}</p>
+                                <div className="flex items-center justify-center gap-2 mb-3">
+                                    {topSellers[2].streak > 0 && (
+                                        <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
+                                            <Flame className="w-4 h-4 text-orange-500" />
+                                            <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[2].streak}</span>
+                                        </div>
                                     )}
                                 </div>
+                                <div className="flex gap-0.5 h-2.5 mb-1">
+                                    {[...Array(20)].map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`flex-1 rounded-sm transition-all duration-300 
+                                                      ${index < topSellers[2].stageScore
+                                                        ? getStageColor(topSellers[2].stage).bgLight + ' ' + getStageColor(topSellers[2].stage).bgDark
+                                                        : getStageColor(topSellers[2].stage).emptyLight + ' ' + getStageColor(topSellers[2].stage).emptyDark}`}
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-sm text-orange-600">Stage {topSellers[2].stage}</span>
                             </div>
-                            <h3 className="font-bold text-lg">{topSellers[2].name}</h3>
-                            <p className="text-gray-600 mb-3">Score: {topSellers[2].score}</p>
-                            <div className="flex items-center justify-center gap-2 mb-3">
-                                {topSellers[2].streak > 0 && (
-                                    <div className="flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded-full">
-                                        <Flame className="w-4 h-4 text-orange-500" />
-                                        <span className="text-sm font-medium text-orange-600 dark:text-orange-400">{topSellers[2].streak}</span>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="flex gap-0.5 h-2.5 mb-1">
-                                {[...Array(20)].map((_, index) => (
-                                    <div
-                                        key={index}
-                                        className={`flex-1 rounded-sm transition-all duration-300 
-                                                  ${index < topSellers[2].stageScore
-                                                    ? getStageColor(topSellers[2].stage).bgLight + ' ' + getStageColor(topSellers[2].stage).bgDark
-                                                    : getStageColor(topSellers[2].stage).emptyLight + ' ' + getStageColor(topSellers[2].stage).emptyDark}`}
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-sm text-orange-600">Stage {topSellers[2].stage}</span>
-                        </div>
+                        </>
                     )}
                 </div>
             </div>

@@ -83,7 +83,7 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
   const [stats, setStats] = useState({
     tasksCompleted: 3,
     totalTasks: 4,
-    currentStreak: 8,
+    currentStreak: 5,
     rank: 4,
     score: 96
   });
@@ -443,61 +443,69 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
 
           {/* Stats Section */}
           <div className="md:col-span-3">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"> {/* Changed from grid-cols-4 to grid-cols-3 */}
+              {/* Rank Card */}
+              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4 h-[100px]
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
                   <Trophy className="w-5 h-5 text-yellow-500" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">Ранк</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">#{stats.rank}</div>
+                <div className="flex items-center justify-center h-[40px]">
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">#{stats.rank}</span>
+                </div>
               </div>
 
-              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4
+              {/* Sales Card */}
+              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4 h-[100px]
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
                   <TrendingUp className="w-5 h-5 text-blue-500" />
                   <span className="text-sm text-gray-500 dark:text-gray-400">Нийт борлуулалт</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats.score}</div>
+                <div className="flex items-center justify-center h-[40px]">
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">{stats.score}</span>
+                </div>
               </div>
 
-              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4
+              {/* Streak Card */}
+              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4 h-[100px]
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Даалгаварын явц</span>
+                  <Flame className="w-5 h-5 text-orange-400 dark:text-orange-500" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Week streaks & Tasks</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {stats.tasksCompleted} / {stats.totalTasks}
-                </div>
-                <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div 
-                    className="bg-green-500 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${(stats.tasksCompleted / stats.totalTasks) * 100}%` }}
-                  />
+                <div className="relative flex items-center justify-between h-[40px]">
+                  {/* Task Progress Circles - Left Side */}
+                  <div className="flex flex-row gap-1.5 -mt-5">
+                    {[...Array(4)].map((_, index) => (
+                      <div
+                        key={index}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 border-2 
+                                  ${index < stats.tasksCompleted 
+                                    ? 'bg-green-500 border-green-500' 
+                                    : 'bg-transparent border-gray-300 dark:border-gray-600'}`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Fire Animation with Streak Number - Right Side */}
+                  <div className="relative flex items-center justify-center ml-25 -top-7">
+                    <FireAnimation size={128} streak={stats.currentStreak} />
+                    <span className="absolute text-2xl font-bold text-gray-900 dark:text-white z-10 top-20">
+                      {stats.currentStreak}
+                    </span>
+                  </div>
+
+                  {/* Updated Task Counter */}
+                  <div className="absolute bottom-0 left-0 text-sm font-bold text-gray-900 dark:text-white">
+                    {stats.tasksCompleted}/{stats.totalTasks} tasks
+                  </div>
                 </div>
               </div>
-
-              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-xl p-4
-                          border border-gray-200/50 dark:border-gray-700/50 
-                          transition-all duration-200 hover:shadow-lg group">
-    <div className="flex items-center gap-3 mb-2">
-        <Flame className="w-5 h-5 text-orange-400 dark:text-orange-500" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">Week streaks</span>
-    </div>
-    <div className="relative flex items-center">
-        <div className="absolute -left-2 -top-3">
-            <FireAnimation size={64} />
-        </div>
-        <span className="text-2xl font-bold text-gray-900 dark:text-white relative z-10 mt-9 ml-3">
-    {stats.currentStreak}
-</span>
-    </div>
-</div>
             </div>
 
             {/* Charts Section - Right Side */}
