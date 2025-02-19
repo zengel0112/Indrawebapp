@@ -3,8 +3,7 @@ import { ChevronDown, Edit2, Camera, Save, X, Sun, Moon, Trophy, TrendingUp, Che
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import FireAnimation from '../components/FireAnimation';
-
-
+import UserProfileCard from './components/UserProfileCard';
 
 // Helper function for random color
 const getRandomColor = () => {
@@ -230,212 +229,225 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8"> {/* Changed to 5 columns */}
           {/* Profile Section - Left Side */}
           <div className="md:col-span-2"> {/* Takes 2 columns now */}
-            <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-2xl 
+            <div className="space-y-6"> {/* Add this wrapper */}
+              <div className="mb-6">
+                <UserProfileCard 
+                    rank={stats.rank}
+                    avatar={profileData.avatar}
+                    score={stats.score}
+                    trend="up"
+                    streak={stats.currentStreak}
+                />
+              </div>
+              
+              {/* Your existing profile card */}
+              <div className="bg-white/80 dark:bg-gray-800/50 backdrop-blur-xl rounded-2xl 
                          shadow-xl p-8 border border-gray-200/50 dark:border-gray-700/50
                          transition-all duration-200 hover:shadow-2xl">
-              <div className="flex flex-col items-center max-w-2xl mx-auto"> {/* Added max width */}
-                {/* Avatar Section - made larger */}
-                <div className="relative mb-8 group">
-                  {profileData.avatar ? (
-                    <img 
-                      src={profileData.avatar} 
-                      alt="Profile" 
-                      className="w-56 h-56 rounded-full object-cover ring-4 ring-blue-500/30
-                               transition-all duration-200 group-hover:ring-blue-500/50"
-                    />
-                  ) : (
-                    <div 
-                      className="w-56 h-56 rounded-full flex items-center justify-center 
-                               text-white text-6xl font-bold ring-4 ring-blue-500/30
-                               transition-all duration-200 group-hover:ring-blue-500/50"
-                      style={{ backgroundColor: randomColor }}
+                <div className="flex flex-col items-center max-w-2xl mx-auto"> {/* Added max width */}
+                  {/* Avatar Section - made larger */}
+                  <div className="relative mb-8 group">
+                    {profileData.avatar ? (
+                      <img 
+                        src={profileData.avatar} 
+                        alt="Profile" 
+                        className="w-56 h-56 rounded-full object-cover ring-4 ring-blue-500/30
+                                 transition-all duration-200 group-hover:ring-blue-500/50"
+                      />
+                    ) : (
+                      <div 
+                        className="w-56 h-56 rounded-full flex items-center justify-center 
+                                 text-white text-6xl font-bold ring-4 ring-blue-500/30
+                                 transition-all duration-200 group-hover:ring-blue-500/50"
+                        style={{ backgroundColor: randomColor }}
+                      >
+                        {getInitials(profileData.name)}
+                      </div>
+                    )}
+                    <button 
+                      onClick={() => fileInputRef.current.click()}
+                      className="absolute bottom-3 right-3 bg-blue-500 p-4 rounded-full text-white
+                               shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-200
+                               opacity-0 group-hover:opacity-100"
                     >
-                      {getInitials(profileData.name)}
-                    </div>
-                  )}
-                  <button 
-                    onClick={() => fileInputRef.current.click()}
-                    className="absolute bottom-3 right-3 bg-blue-500 p-4 rounded-full text-white
-                             shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-200
-                             opacity-0 group-hover:opacity-100"
-                  >
-                    <Camera size={24} />
-                  </button>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    accept="image/*"
-                  />
-                </div>
+                      <Camera size={24} />
+                    </button>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      accept="image/*"
+                    />
+                  </div>
 
-                <div className="text-center space-y-4 w-full">
-                  {isEditing ? (
-                    <div className="text-center space-y-4 w-full">
-                      <div className="grid grid-cols-1 gap-4">
-                        {/* Basic Info */}
-                        <div className="relative group">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={profileData.name}
-                            onChange={(e) => setProfileData({...profileData, name: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Name"
-                          />
+                  <div className="text-center space-y-4 w-full">
+                    {isEditing ? (
+                      <div className="text-center space-y-4 w-full">
+                        <div className="grid grid-cols-1 gap-4">
+                          {/* Basic Info */}
+                          <div className="relative group">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              value={profileData.name}
+                              onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Name"
+                            />
+                          </div>
+
+                          <div className="relative group">
+                            <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              value={profileData.role}
+                              onChange={(e) => setProfileData({...profileData, role: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Role/Position"
+                            />
+                          </div>
+
+                          {/* Contact Info */}
+                          <div className="relative group">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="email"
+                              value={profileData.email}
+                              onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Email Address"
+                            />
+                          </div>
+
+                          <div className="relative group">
+                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="tel"
+                              value={profileData.phone}
+                              onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Phone Number"
+                            />
+                          </div>
+
+                          {/* Location & Links */}
+                          <div className="relative group">
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              value={profileData.location}
+                              onChange={(e) => setProfileData({...profileData, location: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Location"
+                            />
+                          </div>
+
+                          <div className="relative group">
+                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="url"
+                              value={profileData.website}
+                              onChange={(e) => setProfileData({...profileData, website: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Website"
+                            />
+                          </div>
+
+                          {/* Bio */}
+                          <div className="relative group">
+                            <FileText className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                            <textarea
+                              value={profileData.bio}
+                              onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                              className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
+                                       border border-gray-200 dark:border-gray-600 rounded-xl
+                                       focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Write something about yourself..."
+                              rows="4"
+                            />
+                          </div>
                         </div>
 
-                        <div className="relative group">
-                          <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={profileData.role}
-                            onChange={(e) => setProfileData({...profileData, role: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Role/Position"
-                          />
-                        </div>
-
-                        {/* Contact Info */}
-                        <div className="relative group">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="email"
-                            value={profileData.email}
-                            onChange={(e) => setProfileData({...profileData, email: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Email Address"
-                          />
-                        </div>
-
-                        <div className="relative group">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="tel"
-                            value={profileData.phone}
-                            onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Phone Number"
-                          />
-                        </div>
-
-                        {/* Location & Links */}
-                        <div className="relative group">
-                          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={profileData.location}
-                            onChange={(e) => setProfileData({...profileData, location: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Location"
-                          />
-                        </div>
-
-                        <div className="relative group">
-                          <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="url"
-                            value={profileData.website}
-                            onChange={(e) => setProfileData({...profileData, website: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Website"
-                          />
-                        </div>
-
-                        {/* Bio */}
-                        <div className="relative group">
-                          <FileText className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                          <textarea
-                            value={profileData.bio}
-                            onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
-                            className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 
-                                     border border-gray-200 dark:border-gray-600 rounded-xl
-                                     focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Write something about yourself..."
-                            rows="4"
-                          />
+                        {/* Save/Cancel Buttons */}
+                        <div className="flex gap-2 mt-6">
+                          <button
+                            onClick={() => {
+                              setIsEditing(false);
+                              localStorage.setItem('profileData', JSON.stringify(profileData));
+                            }}
+                            className="flex-1 px-6 py-3 bg-blue-500 text-white rounded-xl
+                                     hover:bg-blue-600 transition-all duration-200 font-medium"
+                          >
+                            <Save size={18} className="inline mr-2" /> Save
+                          </button>
+                          <button
+                            onClick={() => {
+                              setIsEditing(false);
+                              setProfileData(JSON.parse(localStorage.getItem('profileData')));
+                            }}
+                            className="flex-1 px-6 py-3 bg-gray-500 text-white rounded-xl
+                                     hover:bg-gray-600 transition-all duration-200 font-medium"
+                          >
+                            <X size={18} className="inline mr-2" /> Cancel
+                          </button>
                         </div>
                       </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{profileData.name}</h2>
+                        <p className="text-lg text-gray-600 dark:text-gray-300">{profileData.role}</p>
+                        
+                        {profileData.email && (
+                          <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+                            <Mail className="w-4 h-4" />
+                            <span>{profileData.email}</span>
+                          </div>
+                        )}
+                        
+                        {profileData.location && (
+                          <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+                            <MapPin className="w-4 h-4" />
+                            <span>{profileData.location}</span>
+                          </div>
+                        )}
+                        
+                        {profileData.website && (
+                          <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+                            <Globe className="w-4 h-4" />
+                            <a href={profileData.website} className="hover:text-blue-500">{profileData.website}</a>
+                          </div>
+                        )}
+                        
+                        {profileData.bio && (
+                          <div className="text-gray-600 dark:text-gray-300 mt-4">
+                            <p>{profileData.bio}</p>
+                          </div>
+                        )}
 
-                      {/* Save/Cancel Buttons */}
-                      <div className="flex gap-2 mt-6">
                         <button
-                          onClick={() => {
-                            setIsEditing(false);
-                            localStorage.setItem('profileData', JSON.stringify(profileData));
-                          }}
-                          className="flex-1 px-6 py-3 bg-blue-500 text-white rounded-xl
+                          onClick={() => setIsEditing(true)}
+                          className="w-full px-6 py-3 mt-4 bg-blue-500 text-white rounded-xl
                                    hover:bg-blue-600 transition-all duration-200 font-medium"
                         >
-                          <Save size={18} className="inline mr-2" /> Save
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsEditing(false);
-                            setProfileData(JSON.parse(localStorage.getItem('profileData')));
-                          }}
-                          className="flex-1 px-6 py-3 bg-gray-500 text-white rounded-xl
-                                   hover:bg-gray-600 transition-all duration-200 font-medium"
-                        >
-                          <X size={18} className="inline mr-2" /> Cancel
+                          <Edit2 size={18} className="inline mr-2" /> 
+                          Edit Profile
                         </button>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{profileData.name}</h2>
-                      <p className="text-lg text-gray-600 dark:text-gray-300">{profileData.role}</p>
-                      
-                      {profileData.email && (
-                        <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
-                          <Mail className="w-4 h-4" />
-                          <span>{profileData.email}</span>
-                        </div>
-                      )}
-                      
-                      {profileData.location && (
-                        <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
-                          <MapPin className="w-4 h-4" />
-                          <span>{profileData.location}</span>
-                        </div>
-                      )}
-                      
-                      {profileData.website && (
-                        <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
-                          <Globe className="w-4 h-4" />
-                          <a href={profileData.website} className="hover:text-blue-500">{profileData.website}</a>
-                        </div>
-                      )}
-                      
-                      {profileData.bio && (
-                        <div className="text-gray-600 dark:text-gray-300 mt-4">
-                          <p>{profileData.bio}</p>
-                        </div>
-                      )}
-
-                      <button
-                        onClick={() => setIsEditing(true)}
-                        className="w-full px-6 py-3 mt-4 bg-blue-500 text-white rounded-xl
-                                 hover:bg-blue-600 transition-all duration-200 font-medium"
-                      >
-                        <Edit2 size={18} className="inline mr-2" /> 
-                        Edit Profile
-                      </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

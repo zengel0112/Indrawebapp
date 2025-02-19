@@ -49,7 +49,7 @@ const UserNav = ({ menuOpen, setMenuOpen, toggleDarkMode, isDarkMode }) => {
             </div>
 
             {/* Navigation Links */}
-            <div className="flex-1 w-full flex flex-col gap-2 px-2 mt-6">
+            <div className="flex-1 w-full flex flex-col items-center gap-2 px-2 mt-6">
                 <NavLink to="/dashboard" active={location.pathname === "/dashboard"}>
                     <i className="fi-rr-home text-lg" />
                     {menuOpen && <span className="ml-3">Dashboard</span>}
@@ -92,9 +92,10 @@ const UserNav = ({ menuOpen, setMenuOpen, toggleDarkMode, isDarkMode }) => {
 const NavLink = ({ children, to, active }) => (
     <Link
         to={to}
-        className={`p-2 rounded-lg flex items-center 
-                   ${active ? 'bg-blue-500 text-white' : 
-                   'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'} 
+        className={`w-full p-2 rounded-lg flex items-center justify-center
+                   ${active 
+                     ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' 
+                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'} 
                    transition-colors`}
     >
         {children}
