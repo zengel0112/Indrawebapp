@@ -1,61 +1,77 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'motion/react'
 import PropTypes from 'prop-types'
-// made by tengis
+
 const AdminNav = ({ menuOpen, setMenuOpen, toggleDarkMode, isDarkMode }) => {
-
-    const location = useLocation();
-
-    const toggleOpen = () => setMenuOpen((prev) => !prev);
+    const location = useLocation()
 
     return (
-        <nav className={`w-full h-full bg-light-blue dark:bg-dark-blue flex flex-col text-2xl overflow-hidden
-            items-center justify-between p-2 py-8 text-white *:w-full *:flex *:flex-col *:items-center *:justify-center`}
-        >
-            <div className="border-b-slate-400 border-b-2 h-fit">
-                <div className="overflow-hidden w-20 h-fit px-3 mb-2">
-                    <Link to="/" className="flex justify-center items-center">
-                        <img alt="logo" src="/logo.jpg" className="cursor-pointer rounded-full" />
-                    </Link>
-                </div>
+        <motion.nav className="w-full h-full bg-white dark:bg-gray-800 flex flex-col 
+                              items-center justify-between py-4">
+            {/* Navigation Links */}
+            <div className="flex-1 w-full flex flex-col gap-2 px-2 mt-6">
+                <NavLink to="/adminDashboard" active={location.pathname === "/adminDashboard"}>
+                    <i className={`fi ${location.pathname === '/adminDashboard' ? 'fi-ss-home' : 'fi-rr-home'} text-lg`} />
+                    {menuOpen && <span className="ml-3">Менежрийн самбар</span>}
+                </NavLink>
+
+                <NavLink to="/add-task" active={location.pathname === "/add-task"}>
+                    <i className={`fi ${location.pathname === '/add-task' ? 'fi-sr-layer-plus' : 'fi-rr-layer-plus'} text-lg`} />
+                    {menuOpen && <span className="ml-3">Төсөл нэмэх</span>}
+                </NavLink>
+
+                <NavLink to="/projects" active={location.pathname === "/projects"}>
+                    <i className={`fi ${location.pathname === '/projects' ? 'fi-br-list-check scale-105' : 'fi-rr-list-check'} text-lg`} />
+                    {menuOpen && <span className="ml-3">Анги дүүргэлт</span>}
+                </NavLink>
             </div>
-            <div className={`flex flex-col gap-1 icons`}>
-                <Link to="/adminDashboard">
-                    <i className={`${location.pathname === '/adminDashboard' ? 'fi-ss-home' : 'fi-rr-home'} fi`}></i>
-                    <span>
-                        <p className={menuOpen ? 'inline-block' : 'hidden'}>Dashboard</p>
-                    </span>
-                </Link>
-                <Link to="/add-task">
-                    <i className={`${location.pathname === '/add-task' ? 'fi-sr-layer-plus' : 'fi-rr-layer-plus'} fi`}></i>
-                    {menuOpen && <span>Add task</span>}
-                </Link>
-                <Link to="/projects">
-                    <i className={`${location.pathname === '/projects' ? 'fi-br-list-check scale-105' : 'fi-rr-list-check'} fi`}></i>
-                    {menuOpen && <span>Completed tasks</span>}
-                </Link>
-                <Link to="/usertasks">
-                    <i className={`${location.pathname === '/' ? 'fi-sr-file-edit' : 'fi-rr-file-edit'} fi`}></i>
-                    {menuOpen && <span>Admin</span>}
-                </Link>
-                <Link onClick={toggleDarkMode}>
-                    <i className={`fi ${isDarkMode ? "fi-ss-moon" : "fi-rr-sun"}`}></i>
-                    {menuOpen && <span>{isDarkMode ? "Dark Mode" : "Light Mode"}</span>}
-                </Link>
+
+            {/* Bottom Section */}
+            <div className="w-full px-2 space-y-2">
+                <button 
+                    onClick={toggleDarkMode}
+                    className="w-full p-2 rounded-lg flex items-center justify-center min-h-[40px]
+                             hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                    <div className="flex items-center justify-center">
+                        <i className={`fi ${isDarkMode ? "fi-rr-moon" : "fi-rr-sun"} text-lg`} />
+                        {menuOpen && <span className="ml-3">{isDarkMode ? "Dark" : "Light"}</span>}
+                    </div>
+                </button>
+
+                <button 
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className="w-full p-2 rounded-lg flex items-center justify-center min-h-[40px]
+                             hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                    <div className="flex items-center justify-center">
+                        <i className="fi-rr-menu-burger text-lg" />
+                    </div>
+                </button>
             </div>
-            <div className="icons">
-                <Link onClick={toggleOpen}>
-                    <i className={`${location.pathname === '/' ? 'fi-br-menu-burger' : 'fi-rr-menu-burger'} fi cursor-pointer`}></i>
-                </Link>
-            </div>
-        </nav>
+        </motion.nav>
     )
 }
 
+const NavLink = ({ children, to, active }) => (
+    <Link
+        to={to}
+        className={`p-2 rounded-lg flex items-center justify-center min-h-[40px]
+                   ${active ? 'bg-blue-500 text-white' : 
+                   'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'} 
+                   transition-colors`}
+    >
+        <div className="flex items-center justify-center">
+            {children}
+        </div>
+    </Link>
+)
+
 AdminNav.propTypes = {
-    menuOpen: PropTypes.bool,
-    setMenuOpen: PropTypes.func,
-    toggleDarkMode: PropTypes.func,
-    isDarkMode: PropTypes.bool
+    menuOpen: PropTypes.bool.isRequired,
+    setMenuOpen: PropTypes.func.isRequired,
+    toggleDarkMode: PropTypes.func.isRequired,
+    isDarkMode: PropTypes.bool.isRequired
 }
 
 export default AdminNav

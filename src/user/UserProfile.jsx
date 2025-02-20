@@ -3,8 +3,7 @@ import { ChevronDown, Edit2, Camera, Save, X, Sun, Moon, Trophy, TrendingUp, Che
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import FireAnimation from '../components/FireAnimation';
-
-
+import UserProfileCard from './components/UserProfileCard';
 
 // Helper function for random color
 const getRandomColor = () => {
@@ -148,46 +147,63 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
     const lineChart = new Chart(lineChartRef.current, {
       type: 'line',
       data: {
-      labels: chartData.labels,
-      datasets: [{
-        label: 'Гүйцэтгэл',
-        data: chartData.values,
-        fill: true,
-        backgroundColor: 'rgba(59, 130, 246, 0.1)', 
-        borderColor: '#3B82F6',
-        tension: 0.4,
-        pointRadius: 6,
-        pointHoverRadius: 8
-      }]
+        labels: chartData.labels,
+        datasets: [{
+          label: 'Гүйцэтгэл',
+          data: chartData.values,
+          fill: true,
+          backgroundColor: 'rgba(59, 130, 246, 0.1)', 
+          borderColor: '#3B82F6',
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
       },
       options: {
-      responsive: true,
-      plugins: {
-        legend: {
-        display: false
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: '#1F2937',
+            padding: 8,
+            titleColor: '#fff', 
+            bodyColor: '#fff',
+            borderColor: '#3B82F6',
+            borderWidth: 1,
+            bodyFont: {
+              size: 12
+            },
+            titleFont: {
+              size: 12
+            }
+          }
         },
-        tooltip: {
-        backgroundColor: '#1F2937',
-        padding: 12,
-        titleColor: '#fff', 
-        bodyColor: '#fff',
-        borderColor: '#3B82F6',
-        borderWidth: 1
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(156, 163, 175, 0.1)'
+            },
+            ticks: {
+              font: {
+                size: 10
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 10
+              }
+            }
+          }
         }
-      },
-      scales: {
-        y: {
-        beginAtZero: true,
-        grid: {
-          color: 'rgba(156, 163, 175, 0.1)'
-        }
-        },
-        x: {
-        grid: {
-          display: false
-        }
-        }
-      }
       }
     });
 
@@ -195,49 +211,57 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
       type: 'pie',
       plugins: [ChartDataLabels],
       data: {
-      labels: chartData.labels,
-      datasets: [{
-        label: 'Ангилал хуваарилалт',
-        data: chartData.values,
-        backgroundColor: pieChartColors,
-        borderWidth: 0, // Removed border
-      }],
+        labels: chartData.labels,
+        datasets: [{
+          data: chartData.values.map(value => {
+            const total = chartData.values.reduce((a, b) => a + b, 0);
+            return Math.round((value / total) * 100);
+          }),
+          backgroundColor: pieChartColors,
+          borderWidth: 0,
+        }],
       },
       options: {
-      responsive: true,
-      plugins: {
-        legend: {
-        position: 'top',
-        labels: {
-          font: {
-            size: 14,
-            weight: 'bold'
-          },
-          color: isDarkMode ? '#fff' : '#fff',
-          padding: 20,
-        },
-        },
-        datalabels: {
-        color: '#ffffff',
-        font: {
-          weight: 'bold',
-          size: 14
-        },
-        formatter: (value, context) => {
-              const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-              const percentage = ((value / total) * 100).toFixed(1) + '%';
-              return percentage;
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            align: 'center',
+            labels: {
+              boxWidth: 12,
+              padding: 15,
+              font: {
+                size: 11,
+                weight: '500'
+              },
+              color: isDarkMode ? '#fff' : '#374151',
+              usePointStyle: true,
+              pointStyle: 'circle'
             },
-
           },
+          datalabels: {
+            color: '#ffffff',
+            textShadow: '0 0 6px rgba(0, 0, 0, 0.5)',
+            font: {
+              weight: 'bold',
+              family: 'Inter',
+              size: (context) => {
+                const chart = context.chart;
+                const size = Math.min(chart.height, chart.width);
+                return Math.max(size / 15, 13);
+              }
+            },
+            formatter: (value) => `${value}%`,
+            display: true,
+            offset: 0,
+            padding: 0,
+            anchor: 'center',
+            align: 'center',
+          }
         },
-      },
-      layout: {
-        padding: 20
-      },
-      elements: {
-        arc: {
-          borderWidth: 0 // Removed border from arc elements
+        layout: {
+          padding: 20
         }
       }
     });
@@ -251,6 +275,12 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-[1920px] mx-auto p-8"> {/* Increased max width */}
+        <div className="mb-8">
+          <UserProfileCard 
+            score={stats.score}
+            trend="up"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8"> {/* Changed to 5 columns */}
           {/* Profile Section - Left Side */}
           <div className="md:col-span-2"> {/* Takes 2 columns now */}
@@ -473,8 +503,8 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Ранк</span>
+                  <Trophy className="min-w-[20px] min-h-[20px] w-5 h-5 text-yellow-500" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Ранк</span>
                 </div>
                 <div className="flex items-center justify-center h-[40px]">
                   <span className="text-4xl font-bold text-gray-900 dark:text-white">#{stats.rank}</span>
@@ -486,8 +516,8 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <TrendingUp className="w-5 h-5 text-blue-500" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Нийт борлуулалт</span>
+                  <TrendingUp className="min-w-[20px] min-h-[20px] w-5 h-5 text-blue-500" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Нийт борлуулалт</span>
                 </div>
                 <div className="flex items-center justify-center h-[40px]">
                   <span className="text-4xl font-bold text-gray-900 dark:text-white">{stats.score}</span>
@@ -499,8 +529,8 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
                           border border-gray-200/50 dark:border-gray-700/50 
                           transition-all duration-200 hover:shadow-lg">
                 <div className="flex items-center gap-3 mb-2">
-                  <Flame className="w-5 h-5 text-orange-400 dark:text-orange-500" />
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Week streaks & Tasks</span>
+                  <Flame className="min-w-[20px] min-h-[20px] w-5 h-5 text-orange-400 dark:text-orange-500" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Week streaks & Tasks</span>
                 </div>
                 <div className="relative flex items-center justify-between h-[40px]">
                   {/* Task Progress Circles - Left Side */}
@@ -508,7 +538,7 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
                     {[...Array(4)].map((_, index) => (
                       <div
                         key={index}
-                        className={`w-3 h-3 rounded-full transition-all duration-300 border-2 
+                        className={`min-w-[12px] min-h-[12px] w-3 h-3 rounded-full transition-all duration-300 border-2 
                                   ${index < stats.tasksCompleted 
                                     ? 'bg-green-500 border-green-500' 
                                     : 'bg-transparent border-gray-300 dark:border-gray-600'}`}
@@ -525,7 +555,7 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
                   </div>
 
                   {/* Updated Task Counter */}
-                  <div className="absolute bottom-0 left-0 text-sm font-bold text-gray-900 dark:text-white">
+                  <div className="absolute bottom-0 left-0 text-sm font-bold text-gray-900 dark:text-white whitespace-nowrap">
                     {stats.tasksCompleted}/{stats.totalTasks} tasks
                   </div>
                 </div>
@@ -533,16 +563,30 @@ const UserProfile = ({ isDarkMode, toggleDarkMode }) => {
             </div>
 
             {/* Charts Section - Right Side */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Шугаман диаграм</h3>
-                <TimeframeSelector selected={timeframe} onChange={setTimeframe} />
-                <canvas ref={lineChartRef} className="h-64"></canvas>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {/* Line Chart */}
+              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-lg">
+                <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-900 dark:text-white">
+                  Шугаман диаграм
+                </h3>
+                <div className="overflow-x-auto">
+                  <TimeframeSelector selected={timeframe} onChange={setTimeframe} />
+                  <div className="min-w-[300px] h-48 sm:h-64">
+                    <canvas ref={lineChartRef} className="w-full h-full"></canvas>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-lg">
-                <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Дугуй диаграм</h3>
-                <canvas ref={pieChartRef} className="h-64"></canvas>
+              {/* Pie Chart */}
+              <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-3 sm:p-6 rounded-xl shadow-lg">
+                <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-900 dark:text-white">
+                  Дугуй диаграм
+                </h3>
+                <div className="h-[200px] sm:h-[250px] md:h-[300px] relative">
+                  <div className="absolute inset-0">
+                    <canvas ref={pieChartRef} className="w-full h-full"></canvas>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

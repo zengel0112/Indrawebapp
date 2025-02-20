@@ -24,17 +24,20 @@ const Card = ({ title, value, percentage }) => {
     const colorClass = getColor(percentage)
 
     return (
-        <div className="dark:bg-[#293037] dark:shadow-[0px_2px_5px_2px rgba(0,0,0,0.4)] m-2 flex w-full min-w-[300px] flex-col items-start gap-4 rounded-lg pt-4 pb-1.5 shadow-[0px_2px_5px_2px_rgba(0,52,102,0.35)]">
-            <h2 className="px-12 text-xl font-semibold">{title}</h2>
-            <p className="my-2 flex items-center gap-17 px-12 text-4xl font-semibold">
-                {value}
+        <div className="dark:shadow-[0px_2px_5px_2px rgba(0,0,0,0.4)] m-2 flex w-70 flex-col rounded-lg bg-white shadow-[0px_2px_5px_2px_rgba(0,52,102,0.35)] dark:bg-[#293037]">
+            <h2 className="mt-2 px-6 text-lg font-semibold">{title}</h2>
+            <div className="flex justify-around pr-3 pb-6">
+                <p className="flex w-[40px] items-center gap-18 px-10 text-4xl font-semibold">
+                    {value}
+                </p>
                 <span
-                    className={`ml-2 flex h-[80px] w-[80px] items-center justify-center rounded ${colorClass.split(' ')[0]}`}
+                    className={`flex h-[70px] w-[70px] items-center justify-center rounded text-4xl ${colorClass.split(' ')[0]}`}
                 >
                     {getArrowIcon(percentage)}
                 </span>
-            </p>
-            <div className="relative mb-4 h-2 w-full rounded">
+            </div>
+
+            <div className="relative bottom-5 h-2 w-full rounded">
                 <p
                     className={`absolute left-0 translate-x-1/2 font-semibold ${colorClass.split(' ')[1]}`}
                 >
@@ -53,6 +56,6 @@ Card.propTypes = {
     title: PropTypes.string,
     value: PropTypes.any,
     percentage: PropTypes.number,
-};
+}
 
-export default Card;
+export default Card

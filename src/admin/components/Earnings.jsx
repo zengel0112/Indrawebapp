@@ -7,18 +7,22 @@ const EarningsCard = ({ name, sales, earnings }) => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white p-4 dark:bg-[#293037] rounded-lg shadow-lg mb-4 flex justify-around gap-7"
+            className="mb-4 flex w-[600px] justify-around gap-7 rounded-lg bg-white p-4 shadow-lg dark:bg-[#293037]"
         >
-            <h3 className="text-lg font-semibold w-35">{name}</h3>
-            <p className="text-gray-600"> {sales}</p>
-            <p className="text-gray-600"> {earnings}</p>
+            <h3 className="w-35 text-lg font-semibold">{name}</h3>
+            <p className="text-gray-600 dark:text-gray-300"> {sales}</p>
+            <p className="text-nowrap text-gray-600 dark:text-gray-300">
+                {' '}
+                {earnings}
+            </p>
         </motion.div>
-    );
-};
+    )
+}
 
 const Earnings = ({ timeFrame }) => {
+    console.log('Current timeFrame:', timeFrame)
     const earningsData = {
-        'Өнөөдөр': [
+        Өнөөдөр: [
             { name: 'Gegeehenn', sales: '50', earnings: '1,000,000 ₮' },
             { name: 'Your_Galaa', sales: '70', earnings: '1,500,000 ₮' },
             { name: 'Valvidek', sales: '52', earnings: '1,000,000 ₮' },
@@ -46,10 +50,17 @@ const Earnings = ({ timeFrame }) => {
             { name: 'ZugeerItgel', sales: '300', earnings: '3,000,000 ₮' },
             { name: 'EmptyBulgaa', sales: '350', earnings: '3,500,000 ₮' },
         ],
-    };
-    const sortedEarnings = [...earningsData[timeFrame]].sort((a, b) => b.sales - a.sales);
+    }
+    const sortedEarnings = [...earningsData[timeFrame]].sort(
+        (a, b) => b.sales - a.sales
+    )
     return (
-        <div className="h-1/2 max-w-170 overflow-y-scroll p-4 ml-8 bg-gray-100 dark:bg-[#15191e]">
+        <div className="md:ml-none mt-4 ml-4 h-[550px] overflow-x-scroll bg-gray-100 p-4 dark:bg-[#15191e] dark:text-white">
+            <div className="ml-15 flex pb-2">
+                <p className="w-60">Нэр</p>
+                <p className="w-40">Элсэлт</p>
+                <p>Тооцоо</p>
+            </div>
             {sortedEarnings.map((card, index) => (
                 <EarningsCard
                     key={index}
@@ -59,8 +70,8 @@ const Earnings = ({ timeFrame }) => {
                 />
             ))}
         </div>
-    );
-};
+    )
+}
 
 EarningsCard.propTypes = {
     name: PropTypes.string,
@@ -69,8 +80,7 @@ EarningsCard.propTypes = {
 }
 
 Earnings.propTypes = {
-    timeFrame: PropTypes.number
+    timeFrame: PropTypes.string.isRequired,
 }
 
-
-export default Earnings;
+export default Earnings

@@ -155,7 +155,12 @@ const UserDone = () => {
   );
 
   return (
-    <div className="py-8 px-20 max-sm:px-6 max-sm:py-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-20 max-sm:px-6 max-sm:py-4">
+      {/* Title */}
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+        Холбогдсон үйлчлүүлэгчид
+      </h1>
+
       {/* Dropdown Filters */}
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div className="flex items-center gap-4">
@@ -183,8 +188,9 @@ const UserDone = () => {
                        rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Бүх төлөв</option>
-              <option value="completed">Дууссан</option>
+              <option value="completed">Амжилттай</option>
               <option value="pending">Хүлээгдэж буй</option>
+              <option value="inactive">Идэвхгүй</option>
             </select>
             <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
@@ -208,11 +214,11 @@ const UserDone = () => {
         <table className="w-full">
           <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Name</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Class</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Status</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Date</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">State</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Нэр</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Анги</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Төлөв</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Огноо</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-200">Статус</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -242,7 +248,7 @@ const UserDone = () => {
       {/* Pagination */}
       <div className="mt-4 flex justify-between items-center">
         <div className="text-sm text-gray-600">
-          Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredItems.length)} of {filteredItems.length} entries
+          Нийт {filteredItems.length} бичлэгээс {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filteredItems.length)} харуулж байна
         </div>
         <div className="flex gap-2">
           {[...Array(totalPages)].map((_, i) => (

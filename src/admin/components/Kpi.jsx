@@ -1,44 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const KPI = ({ onAddTask }) => {
-    const [taskName, setTaskName] = useState("");
-    const [points, setPoints] = useState("");
+    const [selectedClass, setSelectedClass] = useState('')
+    const [points, setPoints] = useState('')
     const [bonusRates, setBonusRates] = useState({
-        starter: "",
-        second: "",
-        last: "",
-    });
-
+        starter: '',
+        second: '',
+        last: '',
+    })
     const [targets, setTargets] = useState({
-        starterTargetMax: "",
-        secondTargetMax: "",
-    });
+        starterTargetMax: '',
+        secondTargetMax: '',
+    })
+    const [classOptions, setClassOptions] = useState([])
 
-    // KPI тооцоолол хийх функц
+    useEffect(() => {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
+        const uniqueClasses = [
+            ...new Set(storedTasks.map((task) => task.className)),
+        ]
+        setClassOptions(uniqueClasses)
+    }, [])
+
     const calculateKPI = () => {
         const totalBonus =
             (bonusRates.starter / 100) * points +
             (bonusRates.second / 100) * points +
-            (bonusRates.last / 100) * points;
+            (bonusRates.last / 100) * points
 
         const targetAchieved =
-            (targets.starterTargetMax + targets.secondTargetMax) / 2;
+            (targets.starterTargetMax + targets.secondTargetMax) / 2
 
-        return {
-            totalBonus,
-            targetAchieved,
-        };
-    };
+        return { totalBonus, targetAchieved }
+    }
 
     const handleAddTask = () => {
-        if (!taskName || !points || !targets.starterTargetMax || !targets.secondTargetMax) {
-            alert("Та бүх талбарыг бөглөнө үү!");
-            return;
+        if (
+            !selectedClass ||
+            !points ||
+            !targets.starterTargetMax ||
+            !targets.secondTargetMax
+        ) {
+            alert('Та бүх талбарыг бөглөнө үү!')
+            return
         }
 
         const newTask = {
             id: Date.now(),
-            taskName,
+            className: selectedClass,
             points: parseFloat(points),
             bonusRates: {
                 starter: parseFloat(bonusRates.starter),
@@ -48,107 +57,132 @@ const KPI = ({ onAddTask }) => {
             targets: {
                 starterTargetMax: parseFloat(targets.starterTargetMax),
                 secondTargetMax: parseFloat(targets.secondTargetMax),
-            }
-        };
+            },
+        }
 
-        const updatedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        updatedTasks.push(newTask);
-        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        const updatedTasks = JSON.parse(localStorage.getItem('tasks')) || []
+        updatedTasks.push(newTask)
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks))
 
-        onAddTask(newTask);
+        if (!classOptions.includes(selectedClass)) {
+            setClassOptions([...classOptions, selectedClass])
+        }
 
-        setTaskName("");
-        setPoints("");
-        setBonusRates({ starter: "", second: "", last: ""});
-        setTargets({ starterTargetMax: "", secondTargetMax: ""});
-    };
+        onAddTask(newTask)
 
-    const { totalBonus, targetAchieved } = calculateKPI();
+        setSelectedClass('')
+        setPoints('')
+        setBonusRates({ starter: '', second: '', last: '' })
+        setTargets({ starterTargetMax: '', secondTargetMax: '' })
+    }
+
+    const { totalBonus, targetAchieved } = calculateKPI()
 
     return (
-        <div className="p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
-            <h2 className="text-xl font-bold mb-4 text-black">📌 Add Task (Admin)</h2>
-            
-            {/* Task Name */}
-            <input
-                type="text"
-                placeholder="Task Name"
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
-            
-            {/* Points */}
-            <input
-                type="number"
-                placeholder="Points"
-                value={points}
-                onChange={(e) => setPoints(e.target.value)}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
+        <div className="mx-auto max-w-full rounded-lg bg-gray-100 p-6 shadow-lg dark:bg-gray-800">
+            <h2 className="mb-4 text-center text-2xl font-bold">
+                📌 KPI Тооцоолол
+            </h2>
 
-            {/* Bonus Rates */}
-            <input
-                type="number"
-                placeholder="Starter %"
-                value={bonusRates.starter}
-                onChange={(e) => setBonusRates({...bonusRates, starter: e.target.value})}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
-            <input
-                type="number"
-                placeholder="Second %"
-                value={bonusRates.second}
-                onChange={(e) => setBonusRates({...bonusRates, second: e.target.value})}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
-            <input
-                type="number"
-                placeholder="Last %"
-                value={bonusRates.last}
-                onChange={(e) => setBonusRates({...bonusRates, last: e.target.value})}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
+            <div className="grid grid-cols-2 gap-4">
+                <select
+                    value={selectedClass}
+                    onChange={(e) => setSelectedClass(e.target.value)}
+                    className="w-full rounded-md border bg-white p-2"
+                >
+                    <option value="">Ангийг сонгоно уу</option>
+                    {classOptions.map((className, index) => (
+                        <option key={index} value={className}>
+                            {className}
+                        </option>
+                    ))}
+                </select>
 
-            {/* Targets */}
-            <input
-                type="number"
-                placeholder="Starter Target Max"
-                value={targets.starterTargetMax}
-                onChange={(e) => setTargets({...targets, starterTargetMax: e.target.value})}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
-            <input
-                type="number"
-                placeholder="Second Target Max"
-                value={targets.secondTargetMax}
-                onChange={(e) => setTargets({...targets, secondTargetMax: e.target.value})}
-                className="p-2 border rounded w-full mb-2 text-black placeholder-gray-800"
-            />
+                <input
+                    type="number"
+                    placeholder="Оноо"
+                    value={points}
+                    onChange={(e) => setPoints(e.target.value)}
+                    className="w-full rounded-md border p-2"
+                />
 
-            {/* KPI тооцоолол */}
-            <div className="kpi-section mt-4">
-                <h3 className="text-lg font-bold">KPI тооцоолол</h3>
-                <div>
-                    <strong>Бонусын дүн:</strong> {totalBonus.toFixed(2)} points
-                </div>
-                <div>
-                    <strong>Хүрэх зорилт:</strong> {targetAchieved.toFixed(2)} points
-                </div>
+                <input
+                    type="number"
+                    placeholder="Эхлэх дүн"
+                    value={bonusRates.starter}
+                    onChange={(e) =>
+                        setBonusRates({
+                            ...bonusRates,
+                            starter: e.target.value,
+                        })
+                    }
+                    className="w-full rounded-md border p-2"
+                />
+                <input
+                    type="number"
+                    placeholder="GOAL 1"
+                    value={targets.starterTargetMax}
+                    onChange={(e) =>
+                        setTargets({
+                            ...targets,
+                            starterTargetMax: e.target.value,
+                        })
+                    }
+                    className="w-full rounded-md border p-2"
+                />
+
+                <input
+                    type="number"
+                    placeholder="GOAL 1-ийн нэмэгдэл"
+                    value={bonusRates.second}
+                    onChange={(e) =>
+                        setBonusRates({ ...bonusRates, second: e.target.value })
+                    }
+                    className="w-full rounded-md border p-2"
+                />
+                <input
+                    type="number"
+                    placeholder="GOAL 2"
+                    value={targets.secondTargetMax}
+                    onChange={(e) =>
+                        setTargets({
+                            ...targets,
+                            secondTargetMax: e.target.value,
+                        })
+                    }
+                    className="w-full rounded-md border p-2"
+                />
+
+                <input
+                    type="number"
+                    placeholder="GOAL 2-ийн нэмэгдэл"
+                    value={bonusRates.last}
+                    onChange={(e) =>
+                        setBonusRates({ ...bonusRates, last: e.target.value })
+                    }
+                    className="col-span-2 w-full rounded-md border p-2"
+                />
             </div>
 
-            {/* Add Task Button */}
+            <div className="mt-6 rounded-md bg-white p-4 shadow-md dark:bg-gray-700">
+                <h3 className="text-lg font-semibold">KPI Тооцоолол</h3>
+                <p>
+                    <strong>Бонусын дүн:</strong> {totalBonus.toFixed(2)} points
+                </p>
+                <p>
+                    <strong>Хүрэх зорилт:</strong> {targetAchieved.toFixed(2)}{' '}
+                    points
+                </p>
+            </div>
+
             <button
                 onClick={handleAddTask}
-                className="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 w-full mt-4"
+                className="mt-6 w-full rounded-lg bg-blue-600 py-2 text-white transition hover:bg-blue-700"
             >
-                Add Task
+                Төсөл үүсгэх
             </button>
         </div>
-    );
-};
+    )
+}
 
-{/* <h1 className="text-center text-2xl font-bold">Task Manager</h1>
-<KPI onAddTask={handleAddTask} /> */}
-
-export default KPI;
+export default KPI

@@ -7,9 +7,11 @@ const TodoApp = () => {
         firstName: '',
         date: new Date().toISOString().split('T')[0],
         status: '',
+        flow: '',           // Added flow field
         phone: '',
+        callCount: '',      // Added callCount field
         class: '',
-        info: '',
+        info: ''
     })
     const [editId, setEditId] = useState(null)
 
@@ -39,7 +41,9 @@ const TodoApp = () => {
             firstName: '',
             date: new Date().toISOString().split('T')[0],
             status: '',
+            flow: '',
             phone: '',
+            callCount: '',
             class: '',
             info: '',
         })
@@ -55,7 +59,7 @@ const TodoApp = () => {
     }
 
     return (
-        <div className="min-h-screen p-6 pl-14 text-gray-100">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6 pl-14">
             <div className="">
                 <div className="mb-6 flex items-center justify-between">
                     <h1 className="text-2xl font-semibold text-blue-500">
@@ -69,7 +73,9 @@ const TodoApp = () => {
                                 firstName: '',
                                 date: '',
                                 status: '',
+                                flow: '',
                                 phone: '',
+                                callCount: '',
                                 class: '',
                                 info: '',
                             })
@@ -122,10 +128,28 @@ const TodoApp = () => {
                             <option value="Хүлээгдэж буй">Хүлээгдэж буй</option>
                             <option value="Буцаалт">Буцаалт</option>
                         </select>
+                        <select
+                            name="flow"
+                            value={formData.flow}
+                            onChange={handleInputChange}
+                            className="w-full rounded bg-white p-2 text-sm text-black placeholder:text-slate-500 dark:bg-gray-700 dark:text-white md:text-base"
+                        >
+                            <option value="">Урсгал сонгох</option>
+                            <option value="flow1">Урсгал 1</option>
+                            <option value="flow2">Урсгал 2</option>
+                        </select>
                         <input
                             placeholder="Утасны дугаар"
                             name="phone"
                             value={formData.phone}
+                            onChange={handleInputChange}
+                            className="w-full rounded bg-white p-2 text-sm text-black placeholder:text-slate-500 dark:bg-gray-700 dark:text-white md:text-base"
+                        />
+                        <input
+                            placeholder="Ярьсан тоо"
+                            name="callCount"
+                            type="number"
+                            value={formData.callCount}
                             onChange={handleInputChange}
                             className="w-full rounded bg-white p-2 text-sm text-black placeholder:text-slate-500 dark:bg-gray-700 dark:text-white md:text-base"
                         />
@@ -171,7 +195,13 @@ const TodoApp = () => {
                                     Төлөв
                                 </th>
                                 <th className="text-light-blue p-4 text-left dark:text-blue-400">
+                                    Урсгал
+                                </th>
+                                <th className="text-light-blue p-4 text-left dark:text-blue-400">
                                     Утасны дугаар
+                                </th>
+                                <th className="text-light-blue p-4 text-left dark:text-blue-400">
+                                    Ярьсан тоо
                                 </th>
                                 <th className="text-light-blue p-4 text-left dark:text-blue-400">
                                     Анги
@@ -210,7 +240,9 @@ const TodoApp = () => {
                                             {task.status}
                                         </div>
                                     </td>
+                                    <td className="p-4">{task.flow}</td>
                                     <td className="p-4">{task.phone}</td>
+                                    <td className="p-4">{task.callCount}</td>
                                     <td className="p-4">{task.class}</td>
                                     <td className="max-w-[200px] overflow-x-scroll p-4 text-wrap">
                                         {task.info}
